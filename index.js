@@ -5,7 +5,7 @@ import {
     Client, Events, GatewayIntentBits,
     EmbedBuilder, ActionRowBuilder,
     ButtonBuilder, ButtonStyle,
-    ModalBuilder, TextInputBuilder, TextInputStyle
+    ModalBuilder, TextInputBuilder, TextInputStyle, MessageFlags
 } from 'discord.js';
 
 import db from "./db.js";
@@ -206,7 +206,7 @@ client.on(Events.InteractionCreate, async interaction => {
             await interaction.reply({
                 content: `Recebido! Tu deste nota **${nota}**. Qual o teu progresso no jogo?`,
                 components: [row],
-                ephemeral: true
+                flags: MessageFlags.Ephemeral
             });
             return;
         }

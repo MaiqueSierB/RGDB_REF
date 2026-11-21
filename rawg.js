@@ -1,25 +1,17 @@
-import axios from 'axios';
+// Buscas na RAWG (jogos)
 import config from './config.js';
 
 const BASE = 'https://api.rawg.io/api';
 
-export async function searchGame(name) {
-    const res = await axios.get(`${BASE}/games`, {
-        params: { 
-            key: config.rawgApiKey, 
-            search: name,
-            lang: 'pt-br' // Solicita resultados preferencialmente em PT-BR
-        }
-    });
-    return res.data.results;
+async function rawg(caminho, params = {}) {
+    const qs = new URLSearchParams({ key: config.rawgApiKey, lang: 'pt-br', ...params });
+    const res = await fetch(`${BASE}${caminho}?${qs}`);
+    if (!res.ok) throw new Error(`RAWG respondeu ${res.status}`);
+    return res.json();
 }
 
-export async function getGameDetails(id) {
-    const res = await axios.get(`${BASE}/games/${id}`, {
-        params: { 
-            key: config.rawgApiKey,
-            lang: 'pt-br' // Garante que os detalhes tentem vir em português
-        }
-    });
-    return res.data;
+export async function searchGame(name) {
+    return (await rawg('/games', { search: name })).results;
 }
+
+export const getGameDetails = id => rawg(`/games/${id}`);
