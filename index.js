@@ -1,4 +1,6 @@
 import http from 'node:http';
+// Registra os slash commands do RGDB a cada início (garante que estão sempre certos)
+import './deploy-commands.js';
 import {
     Client, Events, GatewayIntentBits,
     EmbedBuilder, ActionRowBuilder,
